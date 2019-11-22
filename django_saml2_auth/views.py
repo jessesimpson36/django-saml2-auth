@@ -164,8 +164,8 @@ def acs(r):
     if user_identity is None:
         return HttpResponseRedirect(get_reverse([denied, 'denied', 'django_saml2_auth:denied']))
 
-    if not user_identity:
-        subject_name_id = settings.SAML2_AUTH.get('SUBJECT_NAMEID_MAPPING', 'email')
+    if settings.SAML2_AUTH.get("SUBJECT_NAMEID_MAPPING") and settings.SAML2_AUTH.get("SAML2_USE_SUBJECT"):
+        subject_name_id = settings.SAML2_AUTH.get('SUBJECT_NAMEID_MAPPING', 'username')
         subject_text = authn_response.get_subject().text
         user_query = { subject_name_id: subject_text }
     else:
